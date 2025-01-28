@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Table(name = "profile")
 @Entity
@@ -25,6 +26,13 @@ public class ProfileEntity {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "photo_id")
+    private String photoId;
+
+    @OneToOne()
+    @JoinColumn(name = "photo_id", updatable = false, insertable = false)
+    private Attach photo;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private GeneralStatus status; //ACTIVE, BLOCK
@@ -38,4 +46,10 @@ public class ProfileEntity {
 
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
+
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    private List<ProfileRoleEntity> roleList;
+
+
+
 }

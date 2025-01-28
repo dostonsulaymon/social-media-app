@@ -6,8 +6,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name = "post")
+@Table(name = "posts")
 @Getter
 @Setter
 public class Post {
@@ -21,10 +24,6 @@ public class Post {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "photo_id")
-    private String photoId;
-
-    @OneToOne()
-    @JoinColumn(name = "photo_id", updatable = false, insertable = false)
-    private Attach photo;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<PostAttaches> postAttaches = new ArrayList<>();
 }

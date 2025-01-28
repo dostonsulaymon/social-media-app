@@ -1,6 +1,5 @@
 package dasturlash.uz.controller;
 
-import dasturlash.uz.exceptions.AppBadException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

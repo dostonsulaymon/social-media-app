@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Data
 @Table(name = "attaches")
 public class Attach {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -34,6 +35,6 @@ public class Attach {
     @Column(name = "visible")
     private Boolean visible = true;
 
-
+    @OneToMany(mappedBy = "attach", cascade = CascadeType.ALL)
+    private List<PostAttaches> postAttaches = new ArrayList<>();
 }
-
