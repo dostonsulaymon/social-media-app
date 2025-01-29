@@ -21,7 +21,7 @@ public class AuthService {
 
     public String registration(RegistrationDTO dto) {
 
-        Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleTrue(dto.getUsername());
+        Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleTrue(dto.login());
         if (optional.isPresent()) {
             ProfileEntity profile = optional.get();
             if (profile.getStatus().equals(GeneralStatus.IN_REGISTRATION)) {
@@ -31,9 +31,9 @@ public class AuthService {
             throw new SomethingWentWrongException("User already exists");
         }
         ProfileEntity entity = new ProfileEntity();
-        entity.setName(dto.getName());
-        entity.setUsername(dto.getUsername());
-        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+        entity.setFirstName(dto.firstName());
+        entity.setLastName(dto.lastName());
+        entity.setPassword(passwordEncoder.encode(dto.password()));
         entity.setStatus(GeneralStatus.IN_REGISTRATION);
         entity.setVisible(true);
         entity.setCreatedDate(LocalDateTime.now());
