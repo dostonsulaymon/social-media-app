@@ -7,9 +7,6 @@ import dasturlash.uz.repository.ProfileRepository;
 import dasturlash.uz.service.ResourceBundleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleTrue(username);
+        Optional<ProfileEntity> optional = profileRepository.findByLoginAndVisibleTrue(username);
 
         if (optional.isEmpty()) {
             log.info("I am throwing an unauthorized exception in Uzbek language");

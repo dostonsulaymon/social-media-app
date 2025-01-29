@@ -20,10 +20,10 @@ public class Attach {
     @Column(name = "path")
     private String path;
 
-    @Column(name = "extension")
+    @Column(name = "extension", length = 10)
     private String extension;
 
-    @Column(name = "origen_name")
+    @Column(name = "origen_name", length = 100)
     private String origenName;
 
     @Column(name = "size")

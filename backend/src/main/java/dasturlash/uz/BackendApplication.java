@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @Slf4j
-public class GiybatBackendApplication {
+public class BackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(GiybatBackendApplication.class, args);
+        SpringApplication.run(BackendApplication.class, args);
         log.info("Giybat backend application started");
     }
 

@@ -21,7 +21,7 @@ public class AuthService {
 
     public String registration(RegistrationDTO dto) {
 
-        Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleTrue(dto.login());
+        Optional<ProfileEntity> optional = profileRepository.findByLoginAndVisibleTrue(dto.login());
         if (optional.isPresent()) {
             ProfileEntity profile = optional.get();
             if (profile.getStatus().equals(GeneralStatus.IN_REGISTRATION)) {
