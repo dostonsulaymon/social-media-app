@@ -17,11 +17,14 @@ public class ProfileEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "second_name")
+    private String secondName;
+
+    @Column(name = "login")
+    private String login;
 
     @Column(name = "password")
     private String password;
@@ -49,7 +52,6 @@ public class ProfileEntity {
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private List<ProfileRoleEntity> roleList;
-
 
 
 }

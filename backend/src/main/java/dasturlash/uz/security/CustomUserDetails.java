@@ -21,10 +21,12 @@ public class CustomUserDetails implements UserDetails {
     private final String password;
     private final List<ProfileRole> roleList;
 
+    // shuyerda qara
     public CustomUserDetails(ProfileEntity profile) {
         this.id = profile.getId();
-        this.name = profile.getName();
-        this.email = profile.getUsername();
+        this.name = profile.getFirstName();
+        this.email = profile.getSecondName();
+
         this.password = profile.getPassword();
         this.status = profile.getStatus();
         // Extract ProfileRole from ProfileRoleEntity

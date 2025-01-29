@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class JwtDTO {
-    private String login;
-    private String role;
-
+public record JwtDTO(
+        String login,
+        String role
+) {
 
 }
+
+

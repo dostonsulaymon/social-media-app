@@ -20,11 +20,12 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CustomUserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final ProfileRepository profileRepository;
     private final ResourceBundleService resourceBundleService;
 
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleTrue(username);
