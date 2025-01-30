@@ -1,8 +1,8 @@
 ### login
-POST http://localhost:6060/auth/login
+POST http://localhost:6060/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "login": "ADMIN",
-  "password": "123"
+  "login": "admin@admin.com",
+  "password": "1"
 }

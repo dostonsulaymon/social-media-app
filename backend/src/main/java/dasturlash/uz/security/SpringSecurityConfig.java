@@ -67,8 +67,8 @@ public class SpringSecurityConfig {
                 });
 
         http.authorizeHttpRequests(request -> {
-                    request.requestMatchers("/api/auth/**").permitAll()
-                            .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                    request.requestMatchers("/auth/**").permitAll()
+                            .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                             .anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -4,6 +4,7 @@ import dasturlash.uz.dto.JwtResponseDTO;
 import dasturlash.uz.dto.RegistrationDTO;
 import dasturlash.uz.entity.ProfileEntity;
 import dasturlash.uz.enums.GeneralStatus;
+import dasturlash.uz.enums.LanguageEnum;
 import dasturlash.uz.enums.ProfileRole;
 import dasturlash.uz.exceptions.SomethingWentWrongException;
 import dasturlash.uz.exceptions.auth_related.UnauthorizedException;
@@ -30,6 +31,7 @@ public class AuthService {
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final ResourceBundleService resourceBundleService;
     private final JwtUtil jwtUtil;
 
     public String registration(RegistrationDTO dto) {
@@ -56,10 +58,12 @@ public class AuthService {
     }
 
     public JwtResponseDTO login(String login, String password) {
+        ProfileEntity entity = profileRepository.findByLoginAndVisibleTrue(login)
+                .orElseThrow(() -> new UnauthorizedException(resourceBundleService.getMessage("login.password.wrong", LanguageEnum.uz)));
+
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(login, password)
-            );
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(login, password));
 
             if (authentication.isAuthenticated()) {
                 CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -67,16 +71,16 @@ public class AuthService {
                 List<ProfileRole> roles = userDetails.getRoleList();
                 List<String> rolesForToken = roles.stream().map(Enum::name).toList();
 
-                return new JwtResponseDTO(
-                        jwtUtil.encode(login, rolesForToken),  // token
+                return new JwtResponseDTO(jwtUtil.encode(login, rolesForToken),  // token
                         jwtUtil.refreshToken(login, rolesForToken), // refreshToken
                         login,                                 // login
                         rolesForToken                          // roles
                 );
             }
-            throw new UnauthorizedException("Login or password is wrong");
+
+            throw new UnauthorizedException(resourceBundleService.getMessage("login.password.wrong", LanguageEnum.uz));
         } catch (BadCredentialsException e) {
-            throw new UnauthorizedException("Login or password is wrong");
+            throw new UnauthorizedException(resourceBundleService.getMessage("login.password.wrong", LanguageEnum.uz));
         }
     }
 }
