@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class ProfileRoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "profile_id")
     private Long profileId;

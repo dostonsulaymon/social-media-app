@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ProfileRepository extends CrudRepository<ProfileEntity, Long> {
 
     Optional<ProfileEntity> findByLoginAndVisibleTrue(String login);
+
+    boolean existsByLogin(String login);
 }

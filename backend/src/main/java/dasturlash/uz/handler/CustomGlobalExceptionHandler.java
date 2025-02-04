@@ -1,10 +1,7 @@
 package dasturlash.uz.handler;
 
 import dasturlash.uz.exceptions.SomethingWentWrongException;
-import dasturlash.uz.exceptions.auth_related.ForbiddenException;
-import dasturlash.uz.exceptions.auth_related.InvalidTokenException;
-import dasturlash.uz.exceptions.auth_related.TokenExpiredException;
-import dasturlash.uz.exceptions.auth_related.UnauthorizedException;
+import dasturlash.uz.exceptions.auth_related.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -66,8 +63,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     // Bad request exceptions - 400
     @ExceptionHandler({
             IllegalArgumentException.class,
+            ProfileExistException.class,
     })
     public ResponseEntity<?> handleBadRequest(RuntimeException e) {
+        System.out.println("hi");
         return ResponseEntity.status(400).body(e.getMessage());
     }
 

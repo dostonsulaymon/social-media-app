@@ -7,8 +7,10 @@ import dasturlash.uz.enums.GeneralStatus;
 import dasturlash.uz.enums.LanguageEnum;
 import dasturlash.uz.enums.ProfileRole;
 import dasturlash.uz.exceptions.SomethingWentWrongException;
+import dasturlash.uz.exceptions.auth_related.ProfileExistException;
 import dasturlash.uz.exceptions.auth_related.UnauthorizedException;
 import dasturlash.uz.repository.ProfileRepository;
+import dasturlash.uz.repository.ProfileRoleRepository;
 import dasturlash.uz.security.CustomUserDetails;
 import dasturlash.uz.util.JwtUtil;
 import jakarta.validation.constraints.NotBlank;
@@ -33,26 +35,30 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final ResourceBundleService resourceBundleService;
     private final JwtUtil jwtUtil;
+    private final ProfileRoleRepository profileRoleRepository;
 
-    public String registration(RegistrationDTO dto) {
+    public JwtResponseDTO registration(RegistrationDTO dto) {
 
-        Optional<ProfileEntity> optional = profileRepository.findByLoginAndVisibleTrue(dto.login());
-        if (optional.isPresent()) {
-            ProfileEntity profile = optional.get();
-            if (profile.getStatus().equals(GeneralStatus.IN_REGISTRATION)) {
-                profileRepository.delete(profile);
-                //2 sen sms/ email for verificate
-            }
-            throw new SomethingWentWrongException("User already exists");
-        }
-        ProfileEntity entity = new ProfileEntity();
-        entity.setFirstName(dto.firstName());
-        entity.setLastName(dto.lastName());
-        entity.setPassword(passwordEncoder.encode(dto.password()));
-        entity.setStatus(GeneralStatus.IN_REGISTRATION);
-        entity.setVisible(true);
-        entity.setCreatedDate(LocalDateTime.now());
-        profileRepository.save(entity);
+        existsByLogin(dto.login());
+
+        ProfileEntity profile = new ProfileEntity();
+        profile.setFirstName(dto.firstName());
+        profile.setLastName(dto.lastName());
+        profile.setLogin(dto.login());
+        profile.setStatus(GeneralStatus.IN_REGISTRATION);
+        profile.setCreatedDate(LocalDateTime.now());
+        profile.setPassword(passwordEncoder.encode(dto.password()));
+
+
+        ProfileEntity saved = profileRepository.save(profile);
+
+        // phonemi yoki email bilish kerak
+        // email sender service ga request ketadi.
+        // send random code
+        // wait for confirmation
+           // agar user in registration da turib yana register qilishg harakat qilsa, ruhsat bermaymiz.
+           //
+
 
         return null;
     }
@@ -82,5 +88,15 @@ public class AuthService {
         } catch (BadCredentialsException e) {
             throw new UnauthorizedException(resourceBundleService.getMessage("login.password.wrong", LanguageEnum.uz));
         }
+    }
+
+    private void existsByLogin(String login) {
+        boolean result = profileRepository.existsByLogin(login);
+        if (!result) {
+            throw new ProfileExistException(resourceBundleService.getMessage("login.exists", LanguageEnum.uz));
+        }
+
+        System.out.println("heloo");
+
     }
 }
